@@ -17,16 +17,16 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	std::vector<String> myStrings;
+	std::vector<mString> myStrings;
 	myStrings.reserve(10);
 
 	for (int i = 1; i < argc; i++)
 	{
-		myStrings.push_back(String{argv[i]});
+		myStrings.push_back(mString{argv[i]});
 	}
 
 	std::cout << std::endl << "Entered strings are: " << std::endl;
-	for(const String& s : myStrings)
+	for(const mString& s : myStrings)
 	{
 		std::cout << s << std::endl;
 	}

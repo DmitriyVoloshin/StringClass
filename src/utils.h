@@ -2,11 +2,12 @@
 #define UTILS_H_
 
 #include <cstring>
-#include "String.h"
+
+#include "mString.h"
 
 inline char* getLowerCaseCharArray(const char* input)
 {
-	int inputSize = strlen(input) + 1;
+	int inputSize = std::strlen(input) + 1;
 	char* output = new char[inputSize];
 
 	for (int i = 0; i < inputSize; i++)
@@ -16,12 +17,12 @@ inline char* getLowerCaseCharArray(const char* input)
 	return output;
 }
 
-inline bool stringCaseInsensitiveComparator(const String &lhs, const String &rhs)
+inline bool stringCaseInsensitiveComparator(const mString &lhs, const mString &rhs)
 {
-	char* lhsLower = getLowerCaseCharArray(lhs.getText());
-	char* rhsLower = getLowerCaseCharArray(rhs.getText());
+	char* lhsLower = getLowerCaseCharArray(lhs.c_str());
+	char* rhsLower = getLowerCaseCharArray(rhs.c_str());
 
-	bool result = strcmp(lhsLower, rhsLower) < 0;
+	bool result = std::strcmp(lhsLower, rhsLower) < 0;
 
 	delete[] lhsLower;
 	delete[] rhsLower;
