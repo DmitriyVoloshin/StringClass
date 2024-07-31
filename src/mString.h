@@ -24,9 +24,11 @@ public:
 
 	void pushBack(char c);
 
+	//mString& operator=(const char* rhs); // implement me
 	mString& operator=(const mString &rhs);
 	mString& operator=(mString &&rval) noexcept;
 
+	mString& operator+=(char rhs); // implement me
 	mString& operator+=(const char* rhs);
 	mString& operator+=(const mString& rhs);
 	mString& operator+=(mString&& rhs);
@@ -34,13 +36,16 @@ public:
 
 	bool operator==(const mString& rhs) const;
 	bool operator<(const mString& rhs) const;
+	//bool operator>(const mString& rhs) const;  // implement me
 
 	friend void swap(mString& lhs, mString& rhs) noexcept;
 };
 
 mString operator+(const mString& lhs, const mString& rhs);
 mString operator+(const mString& lhs, const char* rhs);
-mString operator+(const mString& lhs, char rhs);
+//mString operator+(const char* rhs, const mString& lhs); // implement me
+mString operator+(const mString& lhs, char rhs); // implement me
+//mString operator+(char lhs, const mString& rhs); // implement me
 
 std::ostream& operator<< (std::ostream& stream, const mString& s);
 std::istream& operator>> (std::istream& stream, mString& s);

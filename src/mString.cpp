@@ -1,10 +1,10 @@
 #include <stdio.h>
-
-#include "utils.h"
-
 #include <iostream>
+#include <limits>
 
 #include "mString.h"
+#include "utils.h"
+
 
 mString::~mString()
 {
@@ -64,7 +64,10 @@ const char* mString::c_str() const noexcept
 
 void mString::pushBack(char c)
 {
-	int sumLength = length + 1;
+	size_t sumLength = length + 1;
+	if (sumLength < length)
+		return;
+
 	char* sumText = new char[sumLength];
 
 	std::strcpy(sumText, text);
@@ -94,9 +97,12 @@ mString& mString::operator=(mString&& rval) noexcept
 
 mString& mString::operator+=(const char* rhs)
 {
-	int charLength = std::strlen(rhs);
+	size_t charLength = std::strlen(rhs);
 
-	int sumLength = length + charLength;
+	size_t sumLength = length + charLength;
+	if (sumLength < length)
+		return *this;
+
 	char* sumText = new char[sumLength];
 
 	std::strcpy(sumText, text);
@@ -109,13 +115,15 @@ mString& mString::operator+=(const char* rhs)
 
 	text[length - 1] = '\0';
 
-	//std::cout << "In operator+=(char* )\n";
 	return *this;
 }
 
 mString& mString::operator+=(const mString& rhs)
 {
-	int sumLength = length + rhs.length - 1;
+	size_t sumLength = length + rhs.length - 1;
+
+	if (sumLength < length)
+		return *this;
 
 	char* sumText = new char[sumLength];
 
@@ -131,7 +139,10 @@ mString& mString::operator+=(const mString& rhs)
 
 mString& mString::operator+=(mString&& rhs)
 {
-	int sumLength = length + rhs.length - 1;
+	size_t sumLength = length + rhs.length - 1;
+
+	if (sumLength < length)
+		return *this;
 
 	char* sumText = new char[sumLength];
 
@@ -160,15 +171,29 @@ bool mString::operator<(const mString& rhs) const
 	return true;
 }
 
+
+template <typename T>
+mString operator+(T&& lhs, const mString& rhs)
+{
+	return mString();
+}
+
+template <typename T>
+mString operator+(const mString& rhs, T&& lhs)
+{
+	return mString();
+}
+
+
 mString operator+(const mString& lhs, const mString& rhs)
 {
-	return mString {lhs} += rhs;
+	return std::move(mString {lhs} += rhs);
 }
 
 
 mString operator+(const mString& lhs, const char* rhs)
 {
-	return mString {lhs} += rhs;
+	return std::move(mString {lhs} += rhs);
 }
 
 mString operator+(const mString& lhs, char rhs)

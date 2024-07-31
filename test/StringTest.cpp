@@ -1,7 +1,8 @@
-#include "CppUTest/TestHarness.h"
-
+#include <future>
 #include <sstream>
 #include <cstring>
+
+#include "CppUTest/TestHarness.h"
 
 #include "../src/mString.h"
 #include "../src/utils.h"
@@ -102,6 +103,18 @@ TEST(MyStringTest, MoveAssignmentKeepsSameObject)
 	s1 = std::move(s1);
 
 	STRCMP_EQUAL("Moved string", s1.c_str());
+}
+
+TEST(MyStringTest, MoveAssignmentEmptiesRvalueObject)
+{
+	mString s1 {"Moved string"};
+	mString s2 {};
+
+	s2 = std::move(s1);
+
+	STRCMP_EQUAL("Moved string", s2.c_str());
+	STRCMP_EQUAL("", s1.c_str());
+	LONGS_EQUAL(0, s1.getLength());
 }
 
 TEST(MyStringTest, CopyAssignmentSameObject)
